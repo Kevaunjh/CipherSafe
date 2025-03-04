@@ -53,7 +53,7 @@ public class FirstFragment extends Fragment {
     }
 
     private void attemptLogin() {
-        String email = binding.usernameInput.getText().toString();  // Changed to email
+        String email = binding.usernameInput.getText().toString();
         String password = binding.passwordInput.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
@@ -71,7 +71,7 @@ public class FirstFragment extends Fragment {
 
             @Override
             public void onError(String errorMessage) {
-                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Login failed: " + errorMessage, Toast.LENGTH_LONG).show();
             }
         });
     }

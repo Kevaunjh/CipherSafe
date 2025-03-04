@@ -63,49 +63,33 @@ public class FirebaseAuthManager {
                 });
     }
 
-    public void activateUser(String username, String password, FirebaseAuthListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public void activateUser(String email, String password, FirebaseAuthListener listener) {
+        Log.d("FirebaseAuth", "Attempting to log in with email: " + email);
 
-        // Find the email associated with the username
-        db.collection("users")
-                .whereEqualTo("username", username)
-                .get()
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String email = document.getString("email");
-
-                            if (email != null) {
-                                // Now log in using email and password
-                                mAuth.signInWithEmailAndPassword(email, password)
-                                        .addOnCompleteListener(signInTask -> {
-                                            if (signInTask.isSuccessful()) {
-                                                FirebaseUser user = mAuth.getCurrentUser();
-                                                if (user != null) {
-                                                    Log.d("FirebaseAuth", "User logged in: " + user.getEmail());
-                                                    listener.onSuccess("Login successful!");
-                                                }
-                                            } else {
-                                                String errorMessage = signInTask.getException() != null ?
-                                                        signInTask.getException().getMessage() : "Login failed.";
-                                                Log.e("FirebaseAuth", "Login failed: " + errorMessage);
-                                                listener.onError(errorMessage);
-                                            }
-                                        });
-                            } else {
-                                listener.onError("Email not found for this username.");
-                            }
-                            break; // Exit loop after first match
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            Log.d("FirebaseAuth", "User logged in successfully: " + user.getEmail());
+                            listener.onSuccess("Login successful!");
+                        } else {
+                            Log.e("FirebaseAuth", "Login failed: Current user is null");
+                            listener.onError("Login failed: User not found.");
                         }
                     } else {
-                        listener.onError("Username not found.");
+                        Exception e = task.getException();
+                        if (e != null) {
+                            Log.e("FirebaseAuth", "Login failed: " + e.getMessage(), e);
+                            listener.onError(e.getMessage());
+                        } else {
+                            Log.e("FirebaseAuth", "Login failed with unknown error.");
+                            listener.onError("Unknown error.");
+                        }
                     }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("FirebaseAuth", "Error fetching username: " + e.getMessage(), e);
-                    listener.onError("Failed to fetch username.");
                 });
     }
+
 
     public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
