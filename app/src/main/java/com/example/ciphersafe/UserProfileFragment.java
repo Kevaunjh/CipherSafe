@@ -19,6 +19,7 @@ public class UserProfileFragment extends Fragment {
 
     private TextView emailTextView;
     private TextView usernameTextView;
+    private TextView passwordTextView;
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
 
@@ -28,6 +29,7 @@ public class UserProfileFragment extends Fragment {
 
         emailTextView = view.findViewById(R.id.emailTextView);
         usernameTextView = view.findViewById(R.id.usernameTextView);
+        passwordTextView = view.findViewById(R.id.passwordTextView);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
@@ -39,6 +41,7 @@ public class UserProfileFragment extends Fragment {
                     if (user != null) {
                         emailTextView.setText(user.getEmail());
                         usernameTextView.setText(user.getUsername());
+                        passwordTextView.setText(user.getPassword());
                     }
                 }
 

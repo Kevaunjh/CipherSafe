@@ -32,7 +32,7 @@ public class FirebaseAuthManager {
                             Log.d("FirebaseAuth", "User registered successfully: " + user.getEmail());
 
                             // Save user data to Realtime Database
-                            saveUserToDatabase(user.getUid(), email, username, listener);
+                            saveUserToDatabase(user.getUid(), email, username, password, listener);
                         }
                     } else {
                         Exception e = task.getException();
@@ -47,9 +47,9 @@ public class FirebaseAuthManager {
                 });
     }
 
-    private void saveUserToDatabase(String userId, String email, String username, FirebaseAuthListener listener) {
+    private void saveUserToDatabase(String userId, String email, String username, String password, FirebaseAuthListener listener) {
         // Create a user object
-        User user = new User(email, username);
+        User user = new User(email, username, password);
 
         // Save to Realtime Database
         databaseReference.child(userId).setValue(user)
