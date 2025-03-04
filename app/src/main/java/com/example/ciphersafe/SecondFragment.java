@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.ciphersafe.databinding.FragmentSecondBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SecondFragment extends Fragment {
 
@@ -43,6 +44,7 @@ public class SecondFragment extends Fragment {
     }
 
     private void attemptRegistration() {
+        FirebaseAuth.getInstance().signOut();
         String username = binding.registerUsernameInput.getText().toString();
         String email = binding.registerEmailInput.getText().toString();
         String password = binding.registerPasswordInput.getText().toString();

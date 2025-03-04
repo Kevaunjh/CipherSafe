@@ -51,4 +51,5 @@ public class UserProfileFragment extends Fragment {
 
         return view;
     }
+
 }

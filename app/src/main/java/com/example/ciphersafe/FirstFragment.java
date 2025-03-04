@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.ciphersafe.databinding.FragmentFirstBinding;
 import com.example.ciphersafe.security.SecurityManager;
 import com.example.ciphersafe.FirebaseAuthManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class FirstFragment extends Fragment {
 
@@ -24,6 +25,7 @@ public class FirstFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
+
     ) {
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -32,7 +34,6 @@ public class FirstFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         if (getActivity() instanceof MainActivity) {
             securityManager = ((MainActivity) getActivity()).getSecurityManager();
             authManager = ((MainActivity) getActivity()).getFirebaseAuthManager();
@@ -53,6 +54,9 @@ public class FirstFragment extends Fragment {
     }
 
     private void attemptLogin() {
+        FirebaseAuth.getInstance().signOut();
+        authManager = ((MainActivity) getActivity()).getFirebaseAuthManager();
+
         String email = binding.usernameInput.getText().toString();
         String password = binding.passwordInput.getText().toString();
 

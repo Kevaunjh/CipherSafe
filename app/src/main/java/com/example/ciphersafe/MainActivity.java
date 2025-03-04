@@ -49,13 +49,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
-        FirebaseAuth.getInstance().setLanguageCode("en"); // Optional: Fix the locale issue
         Log.d("FirebaseAuth", "Firebase initialized");
         // Initialize binding and set content view
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-
+        FirebaseAuth.getInstance().signOut();
         // Initialize module managers
         initializeManagers();
 
